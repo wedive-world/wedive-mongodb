@@ -1,4 +1,4 @@
-# wedive-mongodb
+# wedive-infra
 
 ## How to deploy
 ```
