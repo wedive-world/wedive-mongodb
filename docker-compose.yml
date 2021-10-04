@@ -5,8 +5,8 @@ services:
   mongo:
     image: mongo:latest
     container_name: mongodb
-    # ports:
-    #   - "4100:27017"
+    ports:
+      - "4100:27017"
     volumes: 
       - /root/data:/data/db
     environment: 
