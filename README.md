@@ -1,10 +1,14 @@
 # wedive-mongodb
 
-## How to deploy
+## How to PRD deploy
 ```
-sudo docker-compose up -d
+sh deploy.sh
 ```
 
+## How to DEV deploy
+```
+sh deploy_dev.sh
+```
 
 ## Docker Install [link][docker-install-link]
 [docker-install-link]: https://subicura.com/2017/01/19/docker-guide-for-beginners-2.html
