@@ -18,6 +18,8 @@ services:
   mongo-express:
     image: mongo-express:latest
     container_name: mongo-express
+    env_file: 
+      - mongo-express-secret.env
     environment:
       - ME_CONFIG_MONGODB_SERVER=mongo
       - ME_CONFIG_MONGODB_PORT=27017
@@ -27,8 +29,8 @@ services:
       # - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
       # - ME_CONFIG_MONGODB_AUTH_USERNAME=${MONGO_ROOT_USER}
       # - ME_CONFIG_MONGODB_AUTH_PASSWORD=${MONGO_ROOT_PASSWORD}
-      - ME_CONFIG_BASICAUTH_USERNAME=${MONGOEXPRESS_LOGIN}
-      - ME_CONFIG_BASICAUTH_PASSWORD=${MONGOEXPRESS_PASSWORD}
+      # - ME_CONFIG_BASICAUTH_USERNAME=${MONGOEXPRESS_LOGIN}
+      # - ME_CONFIG_BASICAUTH_PASSWORD=${MONGOEXPRESS_PASSWORD}
     ports:
       - "4200:8081"
     depends_on:
