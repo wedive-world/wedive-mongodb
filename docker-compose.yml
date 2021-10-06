@@ -36,3 +36,12 @@ services:
     depends_on:
       - mongo
     restart: unless-stopped
+
+  example-db-backup:
+    container_name: backup-agent
+    image: tiredofit/db-backup
+    env_file: 
+      - db-backup-config.env
+    volumes:
+      - /root/backups:/backup
+    restart: always
