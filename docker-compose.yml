@@ -8,14 +8,54 @@ services:
     #   - "4100:27017"
     volumes: 
       - /root/data:/data/db
-    environment: 
-      # - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
-      # - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
-      - MONGO_INITDB_DATABASE=platform
-    restart: unless-stopped
+    env_file:
+      - mongo-config.env
+    restart: always
     networks:
       - mongo-network
+    command: mongod --replSet replication
   
+  mongo-replica-1:
+    image: mongo:latest
+    container_name: mongodb-replica-1
+    # ports:
+    #   - "4101:27017"
+    volumes: 
+      - /root/data_replica_1:/data/db
+    env_file:
+      - mongo-config.env
+    restart: always
+    networks:
+      - mongo-network
+    command: mongod --replSet replication
+      
+  mongo-replica-2:
+    image: mongo:latest
+    container_name: mongodb-replica-2
+    # ports:
+    #   - "4102:27017"
+    volumes: 
+      - /root/data_replica_2:/data/db
+    env_file:
+      - mongo-config.env
+    restart: always
+    networks:
+      - mongo-network
+    command: mongod --replSet replication
+
+  mongo-replica-setup:
+    container_name: mongo-replica-setup
+    image: mongo-replica-setup
+    build:
+      context: replica
+      dockerfile: Dockerfile
+    depends_on:
+      - mongo
+      - mongo-replica-1
+      - mongo-replica-2
+    networks:
+      - mongo-network
+
   mongo-express:
     image: mongo-express:latest
     container_name: mongo-express
@@ -30,8 +70,6 @@ services:
       # - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
       # - ME_CONFIG_MONGODB_AUTH_USERNAME=${MONGO_ROOT_USER}
       # - ME_CONFIG_MONGODB_AUTH_PASSWORD=${MONGO_ROOT_PASSWORD}
-      # - ME_CONFIG_BASICAUTH_USERNAME=${MONGOEXPRESS_LOGIN}
-      # - ME_CONFIG_BASICAUTH_PASSWORD=${MONGOEXPRESS_PASSWORD}
     ports:
       - "4200:8081"
     depends_on:
