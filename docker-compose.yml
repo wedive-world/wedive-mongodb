@@ -1,7 +1,6 @@
 version: '3.8'
 
 services: 
-
   mongo:
     image: mongo:latest
     container_name: mongodb
@@ -14,6 +13,8 @@ services:
       # - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
       - MONGO_INITDB_DATABASE=platform
     restart: unless-stopped
+    networks:
+      - mongo-network
   
   mongo-express:
     image: mongo-express:latest
@@ -36,6 +37,8 @@ services:
     depends_on:
       - mongo
     restart: unless-stopped
+    networks:
+      - mongo-network
 
   example-db-backup:
     container_name: backup-agent
@@ -45,3 +48,10 @@ services:
     volumes:
       - /root/backups:/backup
     restart: always
+    networks:
+      - mongo-network
+
+networks:
+  mongo-network:
+    driver: bridge
+    name: mongo-network
