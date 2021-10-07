@@ -10,7 +10,7 @@ services:
       - /root/data:/data/db
       - ./mongo-keyfile:/data/keyfile/mongo-keyfile
     env_file:
-      - mongo-config.env
+      - wedive-secret/mongo-config.env
     restart: always
     networks:
       - mongo-network
@@ -27,7 +27,7 @@ services:
       - /root/data_replica_1:/data/db
       - ./mongo-keyfile:/data/keyfile/mongo-keyfile
     env_file:
-      - mongo-config.env
+      - wedive-secret/mongo-config.env
     restart: always
     networks:
       - mongo-network
@@ -44,7 +44,7 @@ services:
       - /root/data_replica_2:/data/db
       - ./mongo-keyfile:/data/keyfile/mongo-keyfile
     env_file:
-      - mongo-config.env
+      - wedive-secret/mongo-config.env
     restart: always
     networks:
       - mongo-network
@@ -67,7 +67,7 @@ services:
     image: mongo-express:latest
     container_name: mongo-express
     env_file: 
-      - mongo-express-secret.env
+      - wedive-secret/mongo-express-secret.env
     environment:
       - ME_CONFIG_MONGODB_SERVER=mongo
       - ME_CONFIG_MONGODB_PORT=27017
@@ -91,7 +91,7 @@ services:
     depends_on:
       - mongo
     env_file: 
-      - db-backup-config.env
+      - wedive-secret/db-backup-config.env
     volumes:
       - /root/backups:/backup
     restart: always
