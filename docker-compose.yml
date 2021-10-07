@@ -8,40 +8,47 @@ services:
     #   - "4100:27017"
     volumes: 
       - /root/data:/data/db
+      - ./mongo-keyfile:/data/keyfile/mongo-keyfile
     env_file:
       - mongo-config.env
     restart: always
     networks:
       - mongo-network
-    command: mongod --replSet replication
+    command: mongod --replSet replication --keyFile /data/keyfile/mongo-keyfile
   
   mongo-replica-1:
     image: mongo:latest
     container_name: mongodb-replica-1
     # ports:
     #   - "4101:27017"
+    depends_on:
+      - mongo
     volumes: 
       - /root/data_replica_1:/data/db
+      - ./mongo-keyfile:/data/keyfile/mongo-keyfile
     env_file:
       - mongo-config.env
     restart: always
     networks:
       - mongo-network
-    command: mongod --replSet replication
+    command: mongod --replSet replication --keyFile /data/keyfile/mongo-keyfile
       
   mongo-replica-2:
     image: mongo:latest
     container_name: mongodb-replica-2
     # ports:
     #   - "4102:27017"
+    depends_on:
+      - mongo
     volumes: 
       - /root/data_replica_2:/data/db
+      - ./mongo-keyfile:/data/keyfile/mongo-keyfile
     env_file:
       - mongo-config.env
     restart: always
     networks:
       - mongo-network
-    command: mongod --replSet replication
+    command: mongod --replSet replication --keyFile /data/keyfile/mongo-keyfile
 
   mongo-replica-setup:
     container_name: mongo-replica-setup
@@ -78,9 +85,11 @@ services:
     networks:
       - mongo-network
 
-  example-db-backup:
+  backup-agent:
     container_name: backup-agent
     image: tiredofit/db-backup
+    depends_on:
+      - mongo
     env_file: 
       - db-backup-config.env
     volumes:
