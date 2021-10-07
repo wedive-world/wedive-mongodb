@@ -8,13 +8,12 @@ services:
     #   - "4100:27017"
     volumes: 
       - /root/data:/data/db
-      - ./mongo-keyfile:/data/keyfile/mongo-keyfile
     env_file:
       - wedive-secret/mongo-config.env
     restart: always
     networks:
       - mongo-network
-    command: mongod --replSet replication --keyFile /data/keyfile/mongo-keyfile
+    command: mongod --replSet replication
   
   mongo-replica-1:
     image: mongo:latest
@@ -24,14 +23,13 @@ services:
     depends_on:
       - mongo
     volumes: 
-      - /root/data_replica_1:/data/db
-      - ./mongo-keyfile:/data/keyfile/mongo-keyfile
+      - /root/data-replica-1:/data/db
     env_file:
       - wedive-secret/mongo-config.env
     restart: always
     networks:
       - mongo-network
-    command: mongod --replSet replication --keyFile /data/keyfile/mongo-keyfile
+    command: mongod --replSet replication
       
   mongo-replica-2:
     image: mongo:latest
@@ -41,14 +39,13 @@ services:
     depends_on:
       - mongo
     volumes: 
-      - /root/data_replica_2:/data/db
-      - ./mongo-keyfile:/data/keyfile/mongo-keyfile
+      - /root/data-replica-2:/data/db
     env_file:
       - wedive-secret/mongo-config.env
     restart: always
     networks:
       - mongo-network
-    command: mongod --replSet replication --keyFile /data/keyfile/mongo-keyfile
+    command: mongod --replSet replication
 
   mongo-replica-setup:
     container_name: mongo-replica-setup
