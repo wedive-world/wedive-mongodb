@@ -74,10 +74,13 @@ services:
       # - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
       # - ME_CONFIG_MONGODB_AUTH_USERNAME=${MONGO_ROOT_USER}
       # - ME_CONFIG_MONGODB_AUTH_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - ME_CONFIG_OPTIONS_EDITORTHEME=ambiance
     ports:
       - "4200:8081"
     depends_on:
       - mongo
+      - mongo-replica-1
+      - mongo-replica-2
     restart: unless-stopped
     networks:
       - mongo-network
