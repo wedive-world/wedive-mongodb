@@ -10,3 +10,5 @@ config = {
 rs.initiate(config)
 
 rs.conf()
+
+console.log(`replication success, ${JSON.stringify(config)}`)
