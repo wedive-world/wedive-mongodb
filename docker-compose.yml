@@ -1,7 +1,7 @@
 version: '3.8'
 
 services: 
-  mongo:
+  mongodb:
     image: mongo:latest
     container_name: mongodb
     # ports:
@@ -12,53 +12,53 @@ services:
       - wedive-secret/mongo-config.env
     restart: always
     networks:
-      - mongo-network
+      - mongodb-network
     command: mongod --replSet replication
   
-  # mongo-replica-1:
+  # mongodb-replica-1:
   #   image: mongo:latest
   #   container_name: mongodb-replica-1
   #   # ports:
   #   #   - "4101:27017"
   #   depends_on:
-  #     - mongo
+  #     - mongodb
   #   volumes: 
   #     - /root/data-replica-1:/data/db
   #   env_file:
   #     - wedive-secret/mongo-config.env
   #   restart: always
   #   networks:
-  #     - mongo-network
+  #     - mongodb-network
   #   command: mongod --replSet replication
       
-  # mongo-replica-2:
+  # mongodb-replica-2:
   #   image: mongo:latest
   #   container_name: mongodb-replica-2
   #   # ports:
   #   #   - "4102:27017"
   #   depends_on:
-  #     - mongo
+  #     - mongodb
   #   volumes: 
   #     - /root/data-replica-2:/data/db
   #   env_file:
   #     - wedive-secret/mongo-config.env
   #   restart: always
   #   networks:
-  #     - mongo-network
+  #     - mongodb-network
   #   command: mongod --replSet replication
 
-  mongo-replica-setup:
-    container_name: mongo-replica-setup
-    image: mongo-replica-setup
+  mongodb-replica-setup:
+    container_name: mongodb-replica-setup
+    image: mongodb-replica-setup
     build:
       context: replica
       dockerfile: Dockerfile
     depends_on:
-      - mongo
-      # - mongo-replica-1
-      # - mongo-replica-2
+      - mongodb
+      # - mongodb-replica-1
+      # - mongodb-replica-2
     networks:
-      - mongo-network
+      - mongodb-network
 
   mongo-express:
     image: mongo-express:latest
@@ -66,7 +66,7 @@ services:
     env_file: 
       - wedive-secret/mongo-express-secret.env
     environment:
-      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_SERVER=mongodb
       - ME_CONFIG_MONGODB_PORT=27017
       # - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
       # - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_ROOT_USER}
@@ -78,27 +78,27 @@ services:
     ports:
       - "4200:8081"
     depends_on:
-      - mongo
-      # - mongo-replica-1
-      # - mongo-replica-2
+      - mongodb
+      # - mongodb-replica-1
+      # - mongodb-replica-2
     restart: unless-stopped
     networks:
-      - mongo-network
+      - mongodb-network
 
   backup-agent:
     container_name: backup-agent
     image: tiredofit/db-backup
     depends_on:
-      - mongo
+      - mongodb
     env_file: 
       - wedive-secret/db-backup-config.env
     volumes:
       - /root/backups:/backup
     restart: always
     networks:
-      - mongo-network
+      - mongodb-network
 
 networks:
-  mongo-network:
+  mongodb-network:
     driver: bridge
-    name: mongo-network
+    name: mongodb-network

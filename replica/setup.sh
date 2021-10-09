@@ -1,5 +1,5 @@
 #!/bin/bash
 
-sleep 10 | echo Sleeping
+sleep 5 | echo Sleeping...
 
-mongo mongodb://mongo:27017 replicaSet.js
+mongo mongodb://mongodb:27017 replicaSet.js
