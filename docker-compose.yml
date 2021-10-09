@@ -79,8 +79,8 @@ services:
       - "4200:8081"
     depends_on:
       - mongo
-      - mongo-replica-1
-      - mongo-replica-2
+      # - mongo-replica-1
+      # - mongo-replica-2
     restart: unless-stopped
     networks:
       - mongo-network
