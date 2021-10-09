@@ -13,6 +13,11 @@ services:
     restart: always
     networks:
       - mongodb-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
+      interval: 1s
+      timeout: 10s
+      retries: 3
     command: mongod --replSet replication
   
   # mongodb-replica-1:
