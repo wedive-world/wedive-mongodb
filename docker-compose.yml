@@ -15,37 +15,37 @@ services:
       - mongo-network
     command: mongod --replSet replication
   
-  mongo-replica-1:
-    image: mongo:latest
-    container_name: mongodb-replica-1
-    # ports:
-    #   - "4101:27017"
-    depends_on:
-      - mongo
-    volumes: 
-      - /root/data-replica-1:/data/db
-    env_file:
-      - wedive-secret/mongo-config.env
-    restart: always
-    networks:
-      - mongo-network
-    command: mongod --replSet replication
+  # mongo-replica-1:
+  #   image: mongo:latest
+  #   container_name: mongodb-replica-1
+  #   # ports:
+  #   #   - "4101:27017"
+  #   depends_on:
+  #     - mongo
+  #   volumes: 
+  #     - /root/data-replica-1:/data/db
+  #   env_file:
+  #     - wedive-secret/mongo-config.env
+  #   restart: always
+  #   networks:
+  #     - mongo-network
+  #   command: mongod --replSet replication
       
-  mongo-replica-2:
-    image: mongo:latest
-    container_name: mongodb-replica-2
-    # ports:
-    #   - "4102:27017"
-    depends_on:
-      - mongo
-    volumes: 
-      - /root/data-replica-2:/data/db
-    env_file:
-      - wedive-secret/mongo-config.env
-    restart: always
-    networks:
-      - mongo-network
-    command: mongod --replSet replication
+  # mongo-replica-2:
+  #   image: mongo:latest
+  #   container_name: mongodb-replica-2
+  #   # ports:
+  #   #   - "4102:27017"
+  #   depends_on:
+  #     - mongo
+  #   volumes: 
+  #     - /root/data-replica-2:/data/db
+  #   env_file:
+  #     - wedive-secret/mongo-config.env
+  #   restart: always
+  #   networks:
+  #     - mongo-network
+  #   command: mongod --replSet replication
 
   mongo-replica-setup:
     container_name: mongo-replica-setup
