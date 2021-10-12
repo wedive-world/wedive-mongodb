@@ -4,8 +4,8 @@ services:
   mongodb:
     image: mongo:latest
     container_name: mongodb
-    # ports:
-    #   - "4100:27017"
+    ports:
+      - "4100:27017"
     volumes: 
       - /root/data:/data/db
     env_file:
@@ -13,6 +13,11 @@ services:
     restart: always
     networks:
       - mongodb-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
+      interval: 1s
+      timeout: 10s
+      retries: 3
     command: mongod --replSet replication
   
   # mongodb-replica-1:
@@ -21,14 +26,14 @@ services:
   #   # ports:
   #   #   - "4101:27017"
   #   depends_on:
-  #     - mongo
+  #     - mongodb
   #   volumes: 
   #     - /root/data-replica-1:/data/db
   #   env_file:
   #     - wedive-secret/mongo-config.env
   #   restart: always
   #   networks:
-  #     - mongo-network
+  #     - mongodb-network
   #   command: mongod --replSet replication
       
   # mongodb-replica-2:
@@ -37,14 +42,14 @@ services:
   #   # ports:
   #   #   - "4102:27017"
   #   depends_on:
-  #     - mongo
+  #     - mongodb
   #   volumes: 
   #     - /root/data-replica-2:/data/db
   #   env_file:
   #     - wedive-secret/mongo-config.env
   #   restart: always
   #   networks:
-  #     - mongo-network
+  #     - mongodb-network
   #   command: mongod --replSet replication
 
   mongodb-replica-setup:

@@ -7,6 +7,6 @@ config = {
   ],
 }
 
-rs.initiate(config)
-
+rs.initiate()
+rs.reconfig(config,{force:true})
 rs.conf()
