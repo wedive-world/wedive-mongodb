@@ -1,4 +1,4 @@
-FROM mongo
+FROM percona/percona-server-mongodb
 
 WORKDIR /usr/src
 RUN mkdir configs
