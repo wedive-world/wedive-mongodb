@@ -1,13 +1,12 @@
 version: '3.8'
-
 services: 
   mongodb:
-    image: mongo:latest
+    image: percona/percona-server-mongodb:latest
     container_name: mongodb
     ports:
       - "4100:27017"
     volumes: 
-      - /root/data:/data/db
+      - /root/data:/data
     env_file:
       - wedive-secret/mongo-config.env
     restart: always
@@ -18,7 +17,7 @@ services:
       interval: 1s
       timeout: 10s
       retries: 3
-    command: mongod --replSet replication
+    command: mongod
   
   # mongodb-replica-1:
   #   image: mongo:latest
@@ -52,20 +51,20 @@ services:
   #     - mongodb-network
   #   command: mongod --replSet replication
 
-  mongodb-replica-setup:
-    container_name: mongodb-replica-setup
-    image: mongodb-replica-setup
-    build:
-      context: replica
-      dockerfile: Dockerfile
-    env_file:
-      - wedive-secret/db-config.env
-    depends_on:
-      - mongodb
-      # - mongodb-replica-1
-      # - mongodb-replica-2
-    networks:
-      - mongodb-network
+  # mongodb-replica-setup:
+  #   container_name: mongodb-replica-setup
+  #   image: mongodb-replica-setup
+  #   build:
+  #     context: replica
+  #     dockerfile: Dockerfile
+  #   env_file:
+  #     - wedive-secret/db-config.env
+  #   depends_on:
+  #     - mongodb
+  #     # - mongodb-replica-1
+  #     # - mongodb-replica-2
+  #   networks:
+  #     - mongodb-network
 
   mongo-express:
     image: mongo-express:latest
